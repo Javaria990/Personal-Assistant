@@ -1,0 +1,50 @@
+<HomeScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        MDCard:
+            orientation: "vertical"
+            size_hint: 0.9, None
+            height: "540dp"
+            pos_hint: {"center_x": 0.5, "center_y": 1}
+            padding: "8dp"
+            spacing: "8dp"
+            ScrollView:
+                id: schedule_scroll
+                MDList:
+                    id: schedule_list
+        MDFloatingActionButton:
+            icon: "plus"
+            md_bg_color: app.theme_cls.primary_color
+            pos_hint: {'center_x': 0.5}
+            on_release: root.switch_to_new_schedule_screen()
+<NewScheduleScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        MDCard:
+            orientation: "vertical"
+            size_hint: 0.9, None
+            height: "180dp"
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            padding: "8dp"
+            spacing: "8dp"
+            BoxLayout:
+                orientation: "horizontal"
+                MDTextField:
+                    id: title_field
+                    hint_text: "Title"
+                    size_hint_x: 0.7
+                MDBoxLayout:
+                    size_hint_x: 0.3
+                    MDRaisedButton:
+                        text: "Set Time"
+                        on_release: root.show_time_picker()
+            MDBoxLayout:
+                size_hint: 1, 0.3
+                MDLabel:
+                    id: time_label
+                    text: "Selected Time:"
+        MDFloatingActionButton:
+            icon: "content-save"
+            md_bg_color: app.theme_cls.primary_color
+            pos_hint: {'center_x': 0.5}
+            on_release: root.save_schedule_data()
