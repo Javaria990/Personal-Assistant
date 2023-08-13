@@ -1,0 +1,79 @@
+from kivymd.app import MDApp
+from kivymd.uix.button import MDFillRoundFlatButton, MDFloatingActionButton
+from kivymd.uix.label import MDLabel, MDIcon
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.screenmanager import Screen, ScreenManager
+from kivy.core.window import Window
+from kivy.uix.image import Image
+from subprocess import Popen
+class PersonalAssistantApp(MDApp):
+    def build(self):
+        Window.size = (800, 600)
+        screen_manager = ScreenManager()
+        main_screen = Screen(name='main')
+        main_screen.add_widget(self.create_main_layout())
+        screen_manager.add_widget(main_screen)
+        return screen_manager
+    def create_main_layout(self):
+        layout = BoxLayout(orientation='horizontal', spacing='10dp', padding='10dp')
+        image = Image(source=r"C:\Users\hp\Downloads\cute_personal_assistant-fotor-bg-remover-20230629221244.png")
+        layout.add_widget(image)
+        image.size_hint=(1, 0.8)
+        image.pos_hint = {'center_x': 0, 'center_y': 0.5}
+        right_layout = BoxLayout(orientation='vertical', spacing='10dp', padding='10dp')
+        title = MDLabel(
+            text="[size=76][b][u]Personal Assistant[/u][/b][/size]",
+            halign="center",markup=True,
+            font_style="H3",
+            theme_text_color="Custom",
+            text_color=(0, 0, 0.5, 1))
+        right_layout.add_widget(title)
+
+        grid_layout = BoxLayout(orientation='vertical', spacing='10dp', padding='10dp')
+        buttons = [
+            ("Schedule", "calendar-clock", self.open_schedule),
+            ("Reminder", "calendar-clock", self.open_reminder),
+            ("Chat", "robot", self.open_chat),
+            ("Notes", "note-outline", self.open_notes),
+            ("About", "alert-circle-outline", self.about)
+        ]
+        for text, icon, callback in buttons:
+            button = MDFillRoundFlatButton(
+                text="",
+                on_release=callback,
+                theme_text_color="Custom",
+                text_color=(1, 0, 0, 1),
+                md_bg_color=(0.4, 0.6, 0.8, 1),
+                ripple_color=(1, 0, 1, 1),
+                size_hint=(0.8, 0.001),
+            )
+            button.pos_hint = {'center_x': 0.56,
+                                        'center_y': 0.7}  # Example: Move the button to the center horizontally and 70% of the height vertically
+            button_content = BoxLayout(orientation="horizontal")
+
+            icon_widget = MDIcon(icon=icon, halign="center")
+            button_content.add_widget(icon_widget)
+
+            label_widget = MDLabel(text=f"[size=22]{text}[/size]", markup=True, halign="left")
+            button_content.add_widget(label_widget)
+
+            button.add_widget(button_content)
+            grid_layout.add_widget(button)
+
+        right_layout.add_widget(grid_layout)
+        layout.add_widget(right_layout)
+        return layout
+
+    def open_schedule(self, instance):
+        process = Popen(['python', 'Schedule.py'], shell=True)
+    def open_chat(self, instance):
+        process = Popen(['python', 'Chat.py'], shell=True)
+    def open_reminder(self, instance):
+        process = Popen(['python', 'Reminder.py'], shell=True)
+    def open_notes(self, instance):
+        process = Popen(['python', 'Notes.py'], shell=True)
+    def about(self, instance):
+        process = Popen(['python', 'About.py'], shell=True)
+
+if __name__ == "__main__":
+    PersonalAssistantApp().run()
